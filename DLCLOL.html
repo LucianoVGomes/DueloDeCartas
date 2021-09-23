@@ -1,0 +1,205 @@
+<html>
+
+<head>
+  <title>
+    Imersão Dev - Aula 01
+  </title>
+  <link href="style.css" rel="stylesheet">
+  <script>
+      var carta1 = {
+  nome: "Draven",
+  imagem:
+    "https://i.pinimg.com/originals/fe/58/b3/fe58b366141a09d734ed901dff06d803.gif",
+  atributos: {
+    ataque: 10,
+    defesa: 2,
+    magia: 5
+  }
+};
+
+var carta2 = {
+  nome: "Darius",
+  imagem: "https://c.tenor.com/dXBX-xLJv-YAAAAd/darius-league-of-legends.gif",
+  atributos: {
+    ataque: 9,
+    defesa: 10,
+    magia: 2
+  }
+};
+
+var carta3 = {
+  nome: "Yasuo",
+  imagem:
+    "https://c.tenor.com/7Wp_WNtCDz8AAAAM/yasuo.gif",
+  atributos: {
+    ataque: 10,
+    defesa: 7,
+    magia: 1
+  }
+};
+var carta4 = {
+  nome: "Ashe",
+  imagem:
+    "https://i.pinimg.com/originals/17/b9/2a/17b92a3a3f8f6107037b35fe88380400.gif",
+  atributos: {
+    ataque: 8,
+    defesa: 2,
+    magia: 6
+  }
+};
+var carta5 = {
+  nome: "Lux",
+  imagem:
+    "https://c.tenor.com/MzM_KN8UIsYAAAAM/lux.gif",
+  atributos: {
+    ataque: 2,
+    defesa: 2,
+    magia: 12
+  }
+};
+var carta6 = {
+  nome: "Lucian",
+  imagem:
+    "https://c.tenor.com/CvjDEHrtMK0AAAAd/lucian-high-noon-lucian.gif",
+  atributos: {
+    ataque: 12,
+    defesa: 2,
+    magia: 4
+  }
+};
+var carta7 = {
+  nome: "Teemo",
+  imagem:
+    "https://thumbs.gfycat.com/FlimsyDearDarklingbeetle-size_restricted.gif",
+  atributos: {
+    ataque: 2,
+    defesa: 2,
+    magia: 12
+  }
+};
+var cartas = [carta1, carta2, carta3, carta4, carta5, carta6, carta7];
+var cartaMaquina;
+var cartaJogador;
+
+function sortearCarta() {
+  var numeroCartaMaquina = parseInt(Math.random() * 5);
+  cartaMaquina = cartas[numeroCartaMaquina];
+
+  var numeroCartaJogador = parseInt(Math.random() * 5);
+  while (numeroCartaMaquina == numeroCartaJogador) {
+    numeroCartaJogador = parseInt(Math.random() * 5);
+  }
+  cartaJogador = cartas[numeroCartaJogador];
+  console.log(cartaJogador);
+
+  document.getElementById("btnSortear").disabled = true;
+  document.getElementById("btnJogar").disabled = false;
+  exibirCartaJogador();
+}
+
+function obtemAtributoSelecionado() {
+  var radioAtributos = document.getElementsByName("atributo");
+
+  for (var i = 0; i < radioAtributos.length; i++) {
+    if (radioAtributos[i].checked == true) {
+      return radioAtributos[i].value;
+    }
+  }
+}
+
+function jogar() {
+  var atributoSelecionado = obtemAtributoSelecionado();
+  var divResultado = document.getElementById("resultado");
+
+  var valorCartaJogador = cartaJogador.atributos[atributoSelecionado];
+  var valorCartaMaquina = cartaMaquina.atributos[atributoSelecionado];
+
+  if (
+    cartaJogador.atributos[atributoSelecionado] >
+    cartaMaquina.atributos[atributoSelecionado]
+  ) {
+    htmlResultado = "<p class='resultado-final'>Venceu</p>";
+  } else if (
+    cartaJogador.atributos[atributoSelecionado] <
+    cartaMaquina.atributos[atributoSelecionado]
+  ) {
+    htmlResultado = "<p class='resultado-final'>Perdeu</p>";
+  } else {
+    htmlResultado = "<p class='resultado-final'>Empatou</p>";
+  }
+  divResultado.innerHTML = htmlResultado;
+   exibirCartaMaquina();
+}
+function exibirCartaJogador() {
+  var divCartaJogador = document.getElementById("carta-jogador");
+  divCartaJogador.style.backgroundImage = `url(${cartaJogador.imagem})`;
+  var moldura =
+    '<img src="https://www.alura.com.br/assets/img/imersoes/dev-2021/card-super-trunfo-transparent.png" style=" width: inherit; height: inherit; position: absolute;">';
+  var tagHTML = "<div id= 'opcoes' class='carta-status'>";
+
+  var opcoesTexto = "";
+  for (var atributo in cartaJogador.atributos) {
+    opcoesTexto +=
+      "<input type='radio' name='atributo' value='" +
+      atributo +
+      "'>" +
+      atributo +
+      " " +
+      cartaJogador.atributos[atributo] +
+      "<br>";
+  }
+
+  var nome = `<p class="carta-subtitle">${cartaJogador.nome}</p>`;
+  divCartaJogador.innerHTML = moldura + nome + tagHTML + opcoesTexto + "</div>";
+}
+
+function exibirCartaMaquina() {
+  var divCartaMaquina = document.getElementById("carta-maquina");
+  divCartaMaquina.style.backgroundImage = `url(${cartaMaquina.imagem})`;
+  var moldura =
+    '<img src="https://www.alura.com.br/assets/img/imersoes/dev-2021/card-super-trunfo-transparent.png" style=" width: inherit; height: inherit; position: absolute;">';
+  var tagHTML = "<div id= 'opcoes' class='carta-status'>";
+
+  var opcoesTexto = "";
+  for (var atributo in cartaMaquina.atributos) {
+    opcoesTexto +=
+    "<p type='text' name='atributo' value='" +
+      atributo +
+      "'>" +
+      atributo +
+      " " +
+      cartaMaquina.atributos[atributo] +
+   "</p>";
+  }
+
+  var nome = `<p class="carta-subtitle">${cartaMaquina.nome}</p>`;
+  divCartaMaquina.innerHTML = moldura + nome + tagHTML + opcoesTexto + "</div>";
+}
+   </script>
+</head>
+
+<body>
+  <div class="container">
+    <img src="https://www.alura.com.br/assets/img/imersoes/dev-2021/logo-imersao-super-trunfo.png" class="page-logo" alt="">
+    <h1 class="page-title">League Of Legends</h1>
+    <button onclick="sortearCarta()" id="btnSortear">Sortear carta</button>
+    <form id="form">
+      <h2>Escolha o seu Campeão</h2>
+      <div class="wrapper">
+        <div>
+          <div id="carta-jogador">
+            <img src="https://www.alura.com.br/assets/img/imersoes/dev-2021/card-super-trunfo-transparent-ajustado.png" style=" width: inherit; height: inherit; position: absolute;">
+            <h3></h3>
+          </div>
+        </div>
+        <div>
+          <div id="carta-maquina" class="carta"><img src="https://www.alura.com.br/assets/img/imersoes/dev-2021/card-super-trunfo-transparent-ajustado.png" style=" width: inherit; height: inherit; position: absolute;"></div>
+        </div>
+      </div>
+      <button class="button-jogar" type="button" id="btnJogar" onclick="jogar()" disabled="false">Jogar</button>
+      <div id="resultado"></div>
+    </form>
+  </div>
+</body>
+
+</html>
